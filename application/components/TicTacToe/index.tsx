@@ -8,19 +8,14 @@ interface SquareProps {
 }
 
 const Square: React.FC<SquareProps> = ({ value, onSquareClick }) => {
-  // const [value, setValue] = useState(null)
-  // function onSquareClick () {
-  // setValue('X')
-  // }
-
   return (
-    < >
+    <>
       <button className='square' onClick={onSquareClick}>{value}</button>
     </>
   )
 }
 
-function obterLinhasMatrizQuadrada (matriz) {
+function obterLinhasMatrizQuadrada (matriz: Array<number[]>) {
   if (!Array.isArray(matriz) || matriz.length === 0 || matriz.some(row => !Array.isArray(row) || row.length !== matriz.length)) {
     throw new Error('A entrada deve ser uma matriz de ordem quadrada.')
   }
@@ -64,7 +59,7 @@ function Board () {
   const [xIsNext, setXIsNext] = useState(true)
   const [squares, setSquares] = useState(Array(9).fill(null))
 
-  function handleClick (i) {
+  function handleClick (i: number) {
     if (calculateWinner(squares) || squares[i]) {
       return
     }
@@ -108,17 +103,13 @@ function Board () {
   )
 }
 
-function calculateWinner (squares: Array<Array<number>>) {
-  const lines = [
+function calculateWinner (squares: Array<number>) {
+  const lines = obterLinhasMatrizQuadrada([
     [0, 1, 2],
     [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ]
+    [6, 7, 8]
+  ])
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i]
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
